@@ -1,6 +1,5 @@
 const express = require('express');
 const helmet = require('helmet');
-require('dotenv').config()
 
 const Shoutouts = require('../data/shoutouts-model.js');
 
@@ -40,5 +39,13 @@ server.post('/', (req, res) => {
     res.status(500).json({ error: 'Cannot add the shoutout' });
   });
 });
+
+server.use((error, req, res, next) => {
+  console.error(error.message);
+  if (!error.statusCode) {
+    error.statusCode = 500;
+  }
+  res.status(error.statusCode).send(error.message);
+})
 
 module.exports = server;
