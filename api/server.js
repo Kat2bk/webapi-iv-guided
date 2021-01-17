@@ -37,7 +37,10 @@ server.post('/', (req, res) => {
   //   console.log('\nERROR', error);
   //   res.status(500).json({error: "Cannot add shoutout"})
   // }
-  Shoutouts.add(req.body)
+  const newShout = {
+    shout: req.body.shout
+  }
+  Shoutouts.add(newShout)
   .then(shoutout => {
     res.status(201).json(shoutout);
   })
