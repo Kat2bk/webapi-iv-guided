@@ -29,22 +29,22 @@ server.get('/', async (req, res) => {
 //   });
 // });
 
-server.post('/', async (req, res) => {
-  try {
-    const shout = await Shoutouts.add(req.body);
-    res.status(201).json(shout)
-  } catch (error) {
-    console.log('\nERROR', error);
-    next({code: 500, message: 'Cannot add shoutout'})
-  }
-  // Shoutouts.add(req.body)
-  // .then(shoutout => {
-  //   res.status(201).json(shoutout);
-  // })
-  // .catch (error => {
-  //   console.error('\nERROR', error);
-  //   res.status(500).json({ error: 'Cannot add the shoutout' });
-  // });
+server.post('/', (req, res) => {
+  // try {
+  //   const shout = await Shoutouts.add(req.body);
+  //   res.status(201).json(shout)
+  // } catch (error) {
+  //   console.log('\nERROR', error);
+  //   res.status(500).json({error: "Cannot add shoutout"})
+  // }
+  Shoutouts.add(req.body)
+  .then(shoutout => {
+    res.status(201).json(shoutout);
+  })
+  .catch (error => {
+    console.error('\nERROR', error);
+    res.status(500).json({ error: 'Cannot add the shoutout' });
+  });
 });
 
 server.use((error, req, res, next) => {
