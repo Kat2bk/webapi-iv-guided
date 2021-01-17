@@ -9,3 +9,5 @@ server.listen(port, () => {
 
 // heroku looks for node [file name] on a start: scripts
 // testing
+// the reason messageOfTheDay is not displaying is 
+// the .env file is ignored on gitHub.
