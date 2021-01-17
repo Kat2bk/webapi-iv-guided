@@ -8,39 +8,62 @@ const server = express();
 server.use(helmet());
 server.use(express.json());
 
-server.get('/', async (req, res) => {
-  try {
-    const shouts = await Shoutouts.find('shoutouts');
-    res.status(200).json({ messageOfTheDay: process.env.MOTD, shouts})
-  } catch (error) {
-    console.log('\nERROR', error);
-    res.status(500).json({ error: 'Cannot retrieve shouts'})
-  }
-})
+// server.get('/', async (req, res) => {
+//   try {
+//     const shouts = await Shoutouts.find('shoutouts');
+//     res.status(200).json({ messageOfTheDay: process.env.MOTD, shouts})
+//   } catch (error) {
+//     console.log('\nERROR', error);
+//     res.status(500).json({ error: 'Cannot retrieve shouts'})
+//   }
+// })
 
-// server.get('/', (req, res) => {
-//   Shoutouts.find()
-//   .then(shoutouts => {
-//     res.status(200).json(shoutouts);
+// // server.get('/', (req, res) => {
+// //   Shoutouts.find()
+// //   .then(shoutouts => {
+// //     res.status(200).json(shoutouts);
+// //   })
+// //   .catch (error => {
+// //     console.error('\nERROR', error);
+// //     res.status(500).json({ error: 'Cannot retrieve the shoutouts' });
+// //   });
+// // });
+
+// server.post('/', (req, res) => {
+//   // try {
+//   //   const shout = await Shoutouts.add(req.body);
+//   //   res.status(201).json(shout)
+//   // } catch (error) {
+//   //   console.log('\nERROR', error);
+//   //   res.status(500).json({error: "Cannot add shoutout"})
+//   // }
+//   const newShout = {
+//     shout: req.body.shout
+//   }
+//   Shoutouts.add(newShout)
+//   .then(shoutout => {
+//     res.status(201).json(shoutout);
 //   })
 //   .catch (error => {
 //     console.error('\nERROR', error);
-//     res.status(500).json({ error: 'Cannot retrieve the shoutouts' });
+//     res.status(500).json({ error: 'Cannot add the shoutout' });
 //   });
 // });
 
+server.get('/', (req, res) => {
+  const message = process.env.MOTD || "Hello World";
+  Shoutouts.find()
+  .then(shoutouts => {
+    res.status(200).json({ message, shoutouts});
+  })
+  .catch (error => {
+    console.error('\nERROR', error);
+    res.status(500).json({ error: 'Cannot retrieve the shoutouts' });
+  });
+});
+
 server.post('/', (req, res) => {
-  // try {
-  //   const shout = await Shoutouts.add(req.body);
-  //   res.status(201).json(shout)
-  // } catch (error) {
-  //   console.log('\nERROR', error);
-  //   res.status(500).json({error: "Cannot add shoutout"})
-  // }
-  const newShout = {
-    shout: req.body.shout
-  }
-  Shoutouts.add(newShout)
+  Shoutouts.add(req.body)
   .then(shoutout => {
     res.status(201).json(shoutout);
   })
